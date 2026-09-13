@@ -1,0 +1,142 @@
+> 适用于树形 $\large dp$ 的情况，父节点的情况依赖于子节点的取舍，往往采用 $\large DFS(后序遍历）$ 进行动态转移
+> 也有可能反过来，总而言之是具有一定依赖性的
+
+#### 树形背包
+
+```cpp
+//u为现在的根节点，cnt为当前选择了几个节点
+void dfs(int u, int cnt){
+	for(auto v: G[u]){//遍历所有子节点
+	
+		//将u的价值先传递给j,为什么cnt-1是因为要给 u, v 留出一个位置 , 这啥时候写的神秘笔记
+		rep(j, 0, cnt-1){
+			dp[v.first][j] = dp[u][j] + v.second;
+		}
+		
+		//处理
+		dfs(v.first, cnt - 1);
+		rep(j, 1, t){
+			dp[u][j] = max(dp[u][j], dp[v.first][j-1]);
+		}
+	
+	}
+}
+```
+
+## [二叉苹果树](https://www.luogu.com.cn/problem/P2015)
+
+**题意**
+
+略
+
+**题解**
+
+$\large dfs$ 下保留保留 $\large u$ 点至少需要 $\large cnt$ 纸条开始遍历，向上向下传 $\large dp$
+
+```cpp
+void dfs(int u, int f, int cnt){ 
+	if(cnt > k) return; //想要到 u 点必须至少保留 cnt 条边
+	for(auto x : G[u]){
+		int v = x.first;
+		int w = x.second;
+		if(v == f) continue;
+		
+		rep(i, cnt + 1, k){  
+			dp[v][i] = dp[u][i - 1] + w; 
+		}
+
+		dfs(v, u, cnt + 1);
+
+		rep(i, cnt + 1, k){
+			dp[u][i] = max(dp[u][i], dp[v][i]);
+		}
+	}
+	return;
+}
+```
+
+## [偷天换日](https://www.luogu.com.cn/problem/P3360)
+**题意**
+现在有一个博物馆，每个走廊的尽头不是一个有藏品的房间，就是两条走廊。
+房间内有若干副画，价值不同，偷画和经过走廊都需要时间。
+警察还有 $\large n$ 就将到达门口，小偷如果第 $\large n$ 秒的时候还在博物馆，他就要被抓了，请问小偷在不被抓的情况下，最多偷几幅画
+
+输入按照深度优先给出，房间和走廊的数量总共不超过 `300` 
+每组数据给出 $\large t, x$ ，$\large x$ 代表藏品数量，如果是 `0` 说明是走廊，如果不是，那么后面跟的 $\large x$ 组 $\large w , t$ 代表画的价值和偷画的时间 ，  $\large x$  不超过 `30`
+
+**题解**
+易错点在于需要使用 $\large dfs$ 去读取数据，直接看代码
+
+```cpp
+struct node{
+	int to, ww, tt;
+};
+int n;
+vector<node> G[N];
+vii dp(N, vi(610)); 
+
+int p = 0;
+void dfs1(int u){   //dfs 读取数据部分
+	int t, x; cin >> t >> x;
+	p ++;
+	G[u].push_back({p, 0, 2 * t});
+	int v = p;
+	if(x == 0){
+		dfs1(v);
+		dfs1(v);
+	}else{
+		rep(i, 1, x){
+			int w, t; cin >> w >> t;
+			p ++;
+			G[v].push_back({p, w, t});	
+		}
+	}
+	return;
+}
+
+void dfs2(int u, int time){  //树形背包部分
+	//cout << u << " " << time << endl;
+	if(time >= n) return;
+	for(auto tmp : G[u]){
+		int v = tmp.to;
+		//cout << u << " " << v << " " << tmp.ww<< endl;
+		//cout << "? " << u << " " << v << endl;
+		int t = tmp.tt;
+		int w = tmp.ww;
+
+		rep(i, time + t, n){
+			dp[v][i] = dp[u][i - t] + w; 
+		}
+
+		dfs2(v, time + t);
+
+		rep(i, time + t, n){
+			dp[u][i] = max(dp[u][i], dp[v][i]);
+		}
+	}
+	return;
+}
+
+void solve(){
+	cin >> n; 
+
+	dfs1(0);
+	dfs2(0, 0);
+	int res = 0;
+	rep(i, 0, n - 1){
+		res = max(res, dp[0][i]);
+	}
+	cout << res << endl;
+	return;
+}
+```
+
+#### 换根 DP
+
+**用于解决的问题**
+> 当一棵树不指定根，而答案会因为根的不同而受到影响的时候，如果暴力枚举时间复杂度达到 $\large O(N ^ 2)$ , 无法被接受，从而可以使用换根 $\large DP$ 
+
+**解决问题的方案**
+> 先将其中一个点作为根，求出答案，然后将这个点的孩子重新作为更求出答案(这个根的转化时间复杂度要控制在 $\large O(1)$ ，以此类推，从而时间复杂度可以降到 $\large O(N)$
+
+例题： [STA-Station](https://www.luogu.com.cn/problem/P3478)
