@@ -1,3 +1,8 @@
 @use "./variables.scss" as *;
 
 // put your custom CSS here!
+// 强制给目录的各级子标题加上递进的左侧边距
+#toc-content > ul.overflow > li.depth-1 { padding-left: 1.5rem !important; }
+#toc-content > ul.overflow > li.depth-2 { padding-left: 3.0rem !important; }
+#toc-content > ul.overflow > li.depth-3 { padding-left: 4.5rem !important; }
+#toc-content > ul.overflow > li.depth-4 { padding-left: 6.0rem !important; }

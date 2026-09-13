@@ -23,7 +23,8 @@ void dfs(int u, int cnt){
 }
 ```
 
-## [二叉苹果树](https://www.luogu.com.cn/problem/P2015)
+## 例题
+### [二叉苹果树](https://www.luogu.com.cn/problem/P2015)
 
 **题意**
 
@@ -55,7 +56,7 @@ void dfs(int u, int f, int cnt){
 }
 ```
 
-## [偷天换日](https://www.luogu.com.cn/problem/P3360)
+### [偷天换日](https://www.luogu.com.cn/problem/P3360)
 **题意**
 现在有一个博物馆，每个走廊的尽头不是一个有藏品的房间，就是两条走廊。
 房间内有若干副画，价值不同，偷画和经过走廊都需要时间。
