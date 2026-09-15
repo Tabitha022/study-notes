@@ -17,6 +17,7 @@ void dfs(int u, int father){
 		if(v == father) continue;
 		dfs(v, u);
 	}
+	return;
 }
 
 //求  u 和 v 的 lca 
@@ -49,6 +50,8 @@ int lca(int u, int v){
 
 [天天爱跑步](https://www.luogu.com.cn/problem/P1600)
 **题意**
+
+哪个天才可以来教我做这道题
 
 **思路**
 
