@@ -75,3 +75,7 @@ $\large s$ 到 $\large t$ 的最短路一定是 从 $\large s$ 先走到了 $\la
  
 
 # Tarjan 求 LCA
+
+
+# 树链刨分 求 LCA
+
