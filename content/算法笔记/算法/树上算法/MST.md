@@ -10,7 +10,7 @@ vi vis(n + 1);
 rep(i, 1, n){
 	int x = -1;
 	rep(j, 1, n)
-		if(vis[j] && (x == -1 || dis[j] < dis[x])) x = j;
+		if(!vis[j] && (x == -1 || dis[j] < dis[x])) x = j;
 	
 	vis[x] = 1;
 	res += dis[x];
