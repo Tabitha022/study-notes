@@ -2,6 +2,8 @@
 
 ## 朴素算法
 
+>  稠密图
+
 ```cpp
 vi dis(n + 1, INF);
 vii a(n + 1, vi(n + 1));
@@ -21,6 +23,8 @@ rep(i, 1, n){
 ```
 
 ## 优先队列优化
+
+>  稀疏图
 
 ```cpp
 vi vis(n + 1), dis(n + 1, INF);
