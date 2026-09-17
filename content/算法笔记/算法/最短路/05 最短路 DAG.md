@@ -1,15 +1,37 @@
 **使用类型**
->  有向无环图
+> 有向无环图
 
-> 由于是有向无环
-
->  
-**迪杰斯特拉 - 无负权**
 ```cpp
+void solve(){  
+    int n, m; cin >> n >> m;
+    vector<pii> G[m + 1];
+    vi cnt(n + 1);
+    rep(i, 1, m){
+        int u, v, w; cin >> u >> v >> w;
+        G[u].push_back({v, w});
+        cnt[v] ++;
+    }
 
-```
+    vi dis(n + 1, INF);
+    dis[1] = 0;
+  
+    queue<int> q;
+    rep(i, 1, n){
+        if(!cnt[i]) q.push(i);
+    }
 
-**贝尔曼 - 含负权**
-```cpp
-
+    while(q.size()){
+        int u = q.front();
+        q.pop();
+        for(auto [v, w] : G[u]){
+            if(dis[v] > dis[u] + w)
+                dis[v] = dis[u] + w;
+            cnt[v] --;
+            if(!cnt[v])
+                q.push(v);
+        }
+    }
+    cout << dis[n] << endl;
+    return;
+}
 ```
